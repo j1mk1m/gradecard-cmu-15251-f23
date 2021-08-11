@@ -58,3 +58,7 @@ def get_permissions_service():
     service = get_service("drive", "v3")
     permissions = service.permissions()
     return permissions
+
+
+if __name__ == "__main__":
+    get_credentials()
