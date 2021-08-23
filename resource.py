@@ -1,8 +1,7 @@
 import csv
 
-from cli import prompt_roster, prompt_views, prompt_students, prompt_week
-from service import GradecardService, GradescopeService
-from secrets import GRADECARD_SPREADSHEET_ID
+from cli import prompt_roster, prompt_views, prompt_students
+from service import GoogleCloudService
 
 
 class GoogleCloudResource:
