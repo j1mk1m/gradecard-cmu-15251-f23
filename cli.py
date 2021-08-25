@@ -77,17 +77,17 @@ def prompt_students():
         return [student.strip() for student in answers["students"].split(",")], None
 
 
-def prompt_week(weeks):
+def prompt_configs(configs):
     questions = [
         {
             "type": "checkbox",
-            "name": "week",
+            "name": "configs",
             "message": "Which assignments to pull grade data for?",
-            "choices": weeks,
+            "choices": configs,
         }
     ]
     answers = prompt(questions)
-    return answers["week"]
+    return answers["configs"]
 
 
 def prompt_confirm_unpublished(assignment):

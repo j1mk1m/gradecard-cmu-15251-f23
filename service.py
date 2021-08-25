@@ -1,4 +1,7 @@
-from client import GoogleCloudClient
+import os
+import configparser
+
+from client import GoogleCloudClient, GradecardClient
 from constants import (
     ROSTER_SHEET_NAME,
     ROSTER_SHEET_RANGE_W,
@@ -10,6 +13,7 @@ from constants import (
     CARD_SHEETS,
     EXPORT_SHEET_RANGE_HEADER,
     DATA_SHEET_NAME,
+    CONFIG_PATH,
 )
 from secrets import (
     BASE_STUDENT_SPREADSHEET_ID,
@@ -254,3 +258,39 @@ class GoogleCloudService:
             spreadsheet_id=self.spreadsheet_id,
             values=truncate_values(values, EXPORT_HEADER),
         )
+
+
+class GradescopeService:
+    def __init__(self):
+        self.client = GradecardClient()
+
+    def get_configs(self):
+        # Fetch list of config files
+        try:
+            config_files = [i for i in os.listdir(CONFIG_PATH) if i.endswith(".ini")]
+        except FileNotFoundError:
+            return []
+
+        # Get names for config files
+        configs = []
+        for config_file in config_files:
+            config = configparser.ConfigParser()
+            config.read(os.path.join(CONFIG_PATH, config_file))
+            try:
+                name = config["names"]["homework"]
+            except KeyError:
+                continue
+
+            configs.append({"name": name, "value": config_file})
+
+        # Sort configs
+        configs.sort(
+            key=lambda config: map(
+                lambda s: int(s) if s.isdigit() else s, config["name"].split(" ")
+            )
+        )
+
+        return configs
+
+    def load_data_from_config(self, config):
+        pass

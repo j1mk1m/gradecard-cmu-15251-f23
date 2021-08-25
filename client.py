@@ -151,3 +151,7 @@ class GoogleCloudClient:
                 requests.append({"deleteSheet": {"sheetId": destination_sheet_id}})
 
         self.__batch_update_sheet(destination_spreadsheet_id, requests)
+
+
+class GradecardClient:
+    pass

@@ -1,7 +1,7 @@
 import csv
 
-from cli import prompt_roster, prompt_views, prompt_students
-from service import GoogleCloudService
+from cli import prompt_roster, prompt_views, prompt_students, prompt_configs
+from service import GoogleCloudService, GradescopeService
 
 
 class GoogleCloudResource:
@@ -33,3 +33,22 @@ class GoogleCloudResource:
         agents = ["student"]
         students, onwards = prompt_students()
         self.service.update_views(views, agents, students, onwards)
+
+
+class GradescopeResource:
+    def __init__(self):
+        self.service = GradescopeService()
+
+    def post_load_data(self):
+        all_configs = self.service.get_configs()
+
+        if len(all_configs) == 0:
+            print("[ERROR] No homework configs found.")
+            return
+
+        configs = prompt_configs(all_configs)
+        for config in configs:
+            self.service.load_data_from_config(config)
+
+    def post_load_all_data(self):
+        pass

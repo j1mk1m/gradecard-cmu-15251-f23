@@ -57,7 +57,7 @@ MAP_ACTION_TO_ATTRIBUTE = {
     "Create cards": ("GoogleCloudResource", "post_create_cards"),
     "Update views": ("GoogleCloudResource", "post_update_card_views"),
     "Sync data": ("GoogleCloudResource", "post_update_card_data"),
-    "Load Gradescope data": ("GradescopeResource", "post_load_hw_data"),
+    "Load Gradescope data": ("GradescopeResource", "post_load_data"),
 }
 
 ROSTER_PATH = "roster"
