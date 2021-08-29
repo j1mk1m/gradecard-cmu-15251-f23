@@ -5,7 +5,7 @@ from constants import (
     CARD_SHEETS,
     CARD_SHEETS_TO_DELETE,
 )
-from secrets import GRADESCOPE_CLASS_ID
+from secrets import GRADESCOPE_COURSE_ID
 from auth import get_sheet_service, get_drive_service, get_permissions_service
 
 
@@ -162,7 +162,7 @@ class GoogleCloudClient:
 class GradescopeClient:
     def __init__(self):
         self.client = GoogleCloudClient()
-        self.assignments = gradescope.get_course_assignments(GRADESCOPE_CLASS_ID)
+        self.assignments = gradescope.get_course_assignments(GRADESCOPE_COURSE_ID)
 
     def get_assignment_by_name(self, assignment_name):
         for assignment in self.assignments:
@@ -172,4 +172,6 @@ class GradescopeClient:
         raise KeyError("No Assignment Found")
 
     def get_evaluation_data_by_assignment_id(self, assignment_id):
-        return gradescope.get_assignment_evaluations(GRADESCOPE_CLASS_ID, assignment_id)
+        return gradescope.get_assignment_evaluations(
+            GRADESCOPE_COURSE_ID, assignment_id
+        )
