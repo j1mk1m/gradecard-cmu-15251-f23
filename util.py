@@ -46,46 +46,5 @@ def now():
     return str(dt.now())
 
 
-def get_assignment(assignments, assignment):
-    for i, asmt in enumerate(assignments):
-        if assignment == asmt["name"]:
-            return assignments[i]
-
-    raise KeyError(f"Assignment {assignment} does not exist")
-
-
-def get_questions(questions, question):
-    ans = []
-
-    for q in questions:
-        try:
-            colon = q.index(":")
-            paren = q.index("(")
-        except ValueError:
-            continue
-
-        if q[colon + 2 : paren - 1].startswith(question):
-            ans.append(q)
-
-    if len(ans) == 0:
-        raise KeyError(f"No matching question {question} found")
-
-    return ans
-
-
-def get_question_ta(q_eval):
-    for key, value in q_eval["rubric_items"].items():
-        if key.startswith("Grader") and value:
-            try:
-                op = key.index("(")
-            except ValueError:
-                continue
-
-            return key[op + 1 : op + 3]
-
-    return None
-
-
-def rate_limit(i, entries_per_batch, wait_time=100):
-    if i % entries_per_batch == entries_per_batch - 1:
-        time.sleep(wait_time)
+def round_to_hundredths(num):
+    return round(num * 100) / 100

@@ -1,5 +1,12 @@
+# Commented out for public version
+# config.yaml
+# secrets.py
+
 credentials.json
 token.json
+
+roster/*.csv
+config/*.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
