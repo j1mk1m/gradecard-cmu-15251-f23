@@ -12,7 +12,7 @@ class GoogleCloudResource:
         try:
             roster_path = prompt_roster()
         except IndexError:
-            raise FileNotFoundError("No CSV rosters found.") from None
+            raise FileNotFoundError("No CSV Rosters Found") from None
 
         with open(roster_path) as f:
             roster = csv.reader(f)
@@ -39,16 +39,13 @@ class GradescopeResource:
     def __init__(self):
         self.service = GradescopeService()
 
-    def post_load_data(self):
+    def post_load_data(self, load_all_data=False):
         all_configs = self.service.get_configs()
 
         if len(all_configs) == 0:
-            print("[ERROR] No homework configs found.")
-            return
+            raise FileNotFoundError("No Homework Configs Found") from None
 
-        configs = prompt_configs(all_configs)
+        if not load_all_data:
+            configs = prompt_configs(all_configs)
         for config in configs:
             self.service.load_data_from_config(config)
-
-    def post_load_all_data(self):
-        pass
