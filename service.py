@@ -35,7 +35,9 @@ from util import (
     truncate_values,
     round_to_hundredths,
 )
-
+# imports for catching http errors and starting again
+from googleapiclient.errors import HttpError
+from time import sleep
 
 class GoogleCloudService:
     def __init__(self):
@@ -178,9 +180,17 @@ class GoogleCloudService:
             if "student" in agents:
                 print(f"[INFO] Updating student view for {andrew_id}")
                 ssid = get_entry(record, "ssid", EXPORT_HEADER)
-                self.client.copy_sheets_to_spreadsheet(
-                    BASE_STUDENT_SPREADSHEET_ID, views, ssid, views
-                )
+                while True:
+                    try:
+                        self.client.copy_sheets_to_spreadsheet(
+                            BASE_STUDENT_SPREADSHEET_ID, views, ssid, views
+                        )
+                        break
+                    except HttpError:
+                        print("[ERROR] Caught HttpError (likely rate-limit), waiting for 10s")
+                        sleep(10)
+
+
 
             # Update TA card view
             if "ta" in agents:
@@ -221,7 +231,7 @@ class GoogleCloudService:
 
             # Sync student card data
             if "student" in agents:
-                print("[INFO] Syncing student data for {andrew_id}")
+                print(f"[INFO] Syncing student data for {andrew_id}")
 
                 public_variables = []
                 for variable in variables:
@@ -235,12 +245,18 @@ class GoogleCloudService:
                 data = list(zip(public_variables, entries))
 
                 ssid = get_entry(record, "ssid", EXPORT_HEADER)
-                self.client.set_values_in_sheet(
-                    sheet_range=DATA_SHEET_NAME,
-                    spreadsheet_id=ssid,
-                    values=data,
-                    clear_range=True,
-                )
+                while True:
+                    try:
+                        self.client.set_values_in_sheet(
+                            sheet_range=DATA_SHEET_NAME,
+                            spreadsheet_id=ssid,
+                            values=data,
+                            clear_range=True,
+                        )
+                        break
+                    except HttpError:
+                        print("[ERROR] Caught HttpError (likely rate-limit), waiting for 10s")
+                        sleep(10)
 
             # Sync TA card data
             if "ta" in agents:
