@@ -46,7 +46,7 @@ ROSTER_HEADER = [
 USER_ENTERED = "USER_ENTERED"
 
 DATA_SHEET_NAME = "Data"
-CARD_VIEWS = ["Dashboard", "Scores", "Badges"]
+CARD_VIEWS = ["Dashboard", "Scores"]
 CARD_SHEETS = CARD_VIEWS + [DATA_SHEET_NAME]
 
 CARD_SHEETS_TO_DELETE = [f"Copy of {sheet}" for sheet in CARD_VIEWS]
