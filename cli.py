@@ -1,4 +1,5 @@
-from PyInquirer import prompt
+from InquirerPy import prompt
+from InquirerPy.base import Choice
 import glob
 import os
 
@@ -37,7 +38,7 @@ def prompt_views():
             "type": "checkbox",
             "name": "views",
             "message": "Which sheet views do you want to update?",
-            "choices": [{"name": sheet} for sheet in CARD_VIEWS],
+            "choices": [Choice(sheet, name=sheet, enabled=False) for sheet in CARD_VIEWS],
         },
     ]
     answers = prompt(questions)
