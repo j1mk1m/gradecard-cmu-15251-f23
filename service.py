@@ -191,7 +191,6 @@ class GoogleCloudService:
                         sleep(10)
 
 
-
             # Update TA card view
             if "ta" in agents:
                 print(f"[INFO] Updating TA view for {andrew_id}")
@@ -228,6 +227,8 @@ class GoogleCloudService:
                 continue
             if not onwards_flag:
                 continue
+
+            set_entry(record, now(), "last_updated", EXPORT_HEADER)
 
             # Sync student card data
             if "student" in agents:
@@ -271,8 +272,6 @@ class GoogleCloudService:
                     values=data,
                     clear_range=True,
                 )
-
-            set_entry(record, now(), "last_updated", EXPORT_HEADER)
 
         self.client.set_values_in_sheet(
             sheet_range=EXPORT_SHEET_RANGE_W,
